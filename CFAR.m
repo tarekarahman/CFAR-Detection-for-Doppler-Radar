@@ -15,7 +15,6 @@ R_max=200;
 delta_r=1;
 v_max=100;
 %% User Defined Range and Velocity of target
-% *%TODO* :
 % define the target's initial position and velocity. Note : Velocity
 % remains contant
  R=110;
@@ -24,7 +23,6 @@ v_max=100;
 
 %% FMCW Waveform Generation
 
-% *%TODO* :
 %Design the FMCW waveform by giving the specs of each of its parameters.
 % Calculate the Bandwidth (B), Chirp Time (Tchirp) and Slope (slope) of the FMCW
 % chirp using the requirements above.
@@ -65,18 +63,15 @@ R1=R;
 for i=1:length(t)         
     
     
-    % *%TODO* :
     %For each time stamp update the Range of the Target for constant velocity. 
     R1=R1+v*(t(2)-t(1));
     delta_t=2*R1/c;
     
-    % *%TODO* :
     %For each time sample we need update the transmitted and
     %received signal. 
     Tx(i) = cos(2*pi*(fc*t(i)+0.5*Slope*t(i)^2));
     Rx(i) = cos(2*pi*(fc*(t(i)-delta_t)+0.5*Slope*(t(i)-delta_t)^2));
     
-    % *%TODO* :
     %Now by mixing the Transmit and Receive generate the beat signal
     %This is done by element wise matrix multiplication of Transmit and
     %Receiver Signal
@@ -87,23 +82,19 @@ end
 %% RANGE MEASUREMENT
 
 
- % *%TODO* :
 %reshape the vector into Nr*Nd array. Nr and Nd here would also define the size of
 %Range and Doppler FFT respectively.
 Mix=reshape(Mix,Nr,Nd);
 
- % *%TODO* :
 %run the FFT on the beat signal along the range bins dimension (Nr) and
 Y=fft(Mix,[],1);
 %normalize.
 P2=Y/Nr;
 
 
- % *%TODO* :
 % Take the absolute value of FFT output
 P2=abs(P2);
 
- % *%TODO* :
 % Output of FFT is double sided signal, but we are interested in only one side of the spectrum.
 % Hence we throw out half of the samples.
 P1=P2(1:Nr/2,:);
@@ -115,7 +106,6 @@ P1=P2(1:Nr/2,:);
 figure ('Name','Range from First FFT')
 subplot(2,1,1)
 
- % *%TODO* :
  % plot FFT output 
  range_axis2 = linspace(0,200,Nr/2)*((Nr/2)/200);
  plot(range_axis2,P1(:,1)');
@@ -160,28 +150,23 @@ figure,surf(doppler_axis,range_axis,RDM);
 
 %Slide Window through the complete Range Doppler Map
 
-% *%TODO* :
 %Select the number of Training Cells in both the dimensions.
 Tr=10;
 Td=8;
 
-% *%TODO* :
 %Select the number of Guard Cells in both dimensions around the Cell under 
 %test (CUT) for accurate estimation
 Gr=4;
 Gd=4;
 
-% *%TODO* :
 % offset the threshold by SNR value in dB
 offset=6;
 
 
-% *%TODO* :
 %Create a vector to store noise_level for each iteration on training cells
 noise_level = zeros(1,1);
 
 
-% *%TODO* :
 %design a loop such that it slides the CUT across range doppler map by
 %giving margins at the edges for Training and Guard Cells.
 %For every iteration sum the signal level within all the training
@@ -223,11 +208,6 @@ end
    % Use RDM[x,y] as the matrix from the output of 2D FFT for implementing
    % CFAR
 
-
-
-
-
-% *%TODO* :
 % The process above will generate a thresholded block, which is smaller 
 %than the Range Doppler Map as the CUT cannot be located at the edges of
 %matrix. Hence,few cells will not be thresholded. To keep the map size same
